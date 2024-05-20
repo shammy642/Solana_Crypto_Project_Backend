@@ -4,7 +4,7 @@ const client = await create();
 
 export const createAndConnect = async () => {
  try {
-    await client.login("guapteamsol@gmail.com");
+    await client.login(process.env.WEB3_STORAGE_EMAIL);
     await client.setCurrentSpace(
       process.env.WEB3_STORAGE_DID
     )
