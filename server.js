@@ -29,7 +29,7 @@ app.use(
 
 const getImageUrl = (filename) => {
   const baseUrl =  "https://getguap.xyz";
-  return `${baseUrl}/images/${filename}`;
+  return `${baseUrl}/public/images/${filename}`;
 };
 
 
@@ -53,7 +53,7 @@ app.post("/login", (req, res) => {
 console.log("reached after login")
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use('/images', express.static(path.join(__dirname, '/images')));
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 app.post("/guapanate", async (req, res) => {
   try {
