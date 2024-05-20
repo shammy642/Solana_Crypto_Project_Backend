@@ -11,6 +11,8 @@ import { createMetadata } from "./createMetadata.js";
 import { sendTgPic } from "./telegramBot.js";
 import ws from "ws";
 import { kv } from "@vercel/kv";
+import os from 'os';
+import Conf from 'conf';
 
 // await kv.set("nftCounter", null);
 // console.log(await kv.get("nftCounter"))
@@ -22,6 +24,19 @@ const port = process.env.APP_PORT;
 const corsOrigin = process.env.CORS_ORIGIN;
 const secretMessage = process.env.SECRET_MESSAGE;
 const we3StorageEmail = process.env.WEB3_STORAGE_EMAIL;
+// Determine the configuration directory
+const configDir = path.join(os.tmpdir(), 'w3access');
+
+if (!fs.existsSync(configDir)) {
+  fs.mkdirSync(configDir, { recursive: true });
+}
+
+// Use the custom configuration directory
+const conf = new Conf({
+  cwd: configDir,
+});
+
+
 
 app.use("/images", express.static("/Guapanated_Images"));
 
