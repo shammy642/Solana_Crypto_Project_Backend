@@ -1,3 +1,25 @@
+async function createDirectory() {
+  // Using a temporary directory for Vercel compatibility
+  const baseDir = tmpdir();
+  console.log("baseDir: ",baseDir)
+  const targetDir = join(baseDir, 'w3access');
+  console.log("targetDir: ", targetDir)
+
+  if (!existsSync(targetDir)) {
+    try {
+      await mkdir(targetDir, { recursive: true });
+      console.log(`Directory created: ${targetDir}`);
+    } catch (error) {
+      console.error(`Error creating directory: ${error.message}`);
+    }
+  } else {
+    console.log(`Directory already exists: ${targetDir}`);
+  }
+}
+
+createDirectory();
+
+
 import express from "express";
 import cors from "cors";
 import { config as dotenvConfig } from "dotenv";
@@ -22,26 +44,7 @@ import { join } from 'path';
 
 
 
-async function createDirectory() {
-  // Using a temporary directory for Vercel compatibility
-  const baseDir = tmpdir();
-  console.log("baseDir: ",baseDir)
-  const targetDir = join(baseDir, 'w3access');
-  console.log("targetDir: ", targetDir)
 
-  if (!existsSync(targetDir)) {
-    try {
-      await mkdir(targetDir, { recursive: true });
-      console.log(`Directory created: ${targetDir}`);
-    } catch (error) {
-      console.error(`Error creating directory: ${error.message}`);
-    }
-  } else {
-    console.log(`Directory already exists: ${targetDir}`);
-  }
-}
-
-createDirectory();
 
 
 const app = express();
