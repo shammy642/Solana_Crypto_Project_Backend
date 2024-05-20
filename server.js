@@ -14,10 +14,32 @@ import { kv } from "@vercel/kv";
 
 // await kv.set("nftCounter", null);
 // console.log(await kv.get("nftCounter"))
+import { mkdir } from 'fs/promises';
+import { existsSync } from 'fs';
+import { tmpdir } from 'os';
+import { join } from 'path';
+
+async function createDirectory() {
+  // Using a temporary directory for Vercel compatibility
+  const baseDir = tmpdir();
+  const targetDir = join(baseDir, 'w3access');
+
+  if (!existsSync(targetDir)) {
+    try {
+      await mkdir(targetDir, { recursive: true });
+      console.log(`Directory created: ${targetDir}`);
+    } catch (error) {
+      console.error(`Error creating directory: ${error.message}`);
+    }
+  } else {
+    console.log(`Directory already exists: ${targetDir}`);
+  }
+}
+
+createDirectory();
+
 
 const app = express();
-
-
 const port = process.env.APP_PORT;
 const corsOrigin = process.env.CORS_ORIGIN;
 const secretMessage = process.env.SECRET_MESSAGE;
