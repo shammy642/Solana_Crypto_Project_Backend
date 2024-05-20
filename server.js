@@ -11,8 +11,6 @@ import { createMetadata } from "./createMetadata.js";
 import { sendTgPic } from "./telegramBot.js";
 import ws from "ws";
 import { kv } from "@vercel/kv";
-import os from 'os';
-import Conf from 'conf';
 
 // await kv.set("nftCounter", null);
 // console.log(await kv.get("nftCounter"))
@@ -25,21 +23,6 @@ const corsOrigin = process.env.CORS_ORIGIN;
 const secretMessage = process.env.SECRET_MESSAGE;
 const we3StorageEmail = process.env.WEB3_STORAGE_EMAIL;
 
-// Get the configuration directory from the environment variable or use a default
-const configDir = process.env.CONFIG_DIR || path.join(os.tmpdir(), 'w3access');
-
-if (!fs.existsSync(configDir)) {
-  fs.mkdirSync(configDir, { recursive: true });
-}
-
-// Use the custom configuration directory
-const conf = new Conf({
-  cwd: configDir,
-});
-
-
-
-
 app.use("/images", express.static("/Guapanated_Images"));
 
 app.use(
@@ -51,7 +34,7 @@ app.use(express.json({ limit: "300kb" }));
 app.use(express.urlencoded({ limit: "300kb", extended: true }));
 
 //Connect to web3Storage
-await createAndConnect();
+createAndConnect();
 
 app.post("/login", (req, res) => {
   const { password } = req.body;

@@ -1,6 +1,4 @@
 import { create } from "@web3-storage/w3up-client";
-import { filesFromPaths } from "files-from-path";
-
 
 const client = await create();
 
@@ -20,7 +18,7 @@ export const uploadFileToIpfs = async (filePath) => {
     console.log(filePath)
     try {
       // const files = await filesFromPaths(filePath);
-      const cid = await client.uploadFile(filePath);
+      const cid = await client.uploadFile(file);
       console.log(`https://${cid}.ipfs.w3s.link`);
       return cid; 
     } catch (error) {
