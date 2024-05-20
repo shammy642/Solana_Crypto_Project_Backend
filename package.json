@@ -1,12 +1,30 @@
 {
   "name": "guap-backend",
   "version": "1.0.0",
+  "type": "module",
   "dependencies": {
+    "@vercel/edge-config": "^1.1.0",
+    "@vercel/kv": "^1.0.1",
+    "@web3-storage/w3up-client": "^13.1.1",
+    "@xixiyahaha/rembg-node": "^2.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "files-from-path": "^1.0.4",
+    "ipfs-core": "^0.18.1",
+    "multer": "^1.4.5-lts.1",
+    "node-fetch": "^3.3.2",
+    "node-telegram-bot-api": "^0.65.1",
+    "sharp": "^0.33.3",
+    "umi": "^4.2.3",
+    "vercel": "^34.2.0",
+    "ws": "^8.17.0"
   },
   "scripts": {
     "start": "nodemon server.js"
+  },
+  "nodemonConfig": {
+    "watch": ["server.js", "routes", "controllers"],
+    "ignore": ["nfts/*"]
   }
 }
