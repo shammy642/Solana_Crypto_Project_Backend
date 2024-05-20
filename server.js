@@ -24,8 +24,9 @@ const port = process.env.APP_PORT;
 const corsOrigin = process.env.CORS_ORIGIN;
 const secretMessage = process.env.SECRET_MESSAGE;
 const we3StorageEmail = process.env.WEB3_STORAGE_EMAIL;
-// Determine the configuration directory
-const configDir = path.join(os.tmpdir(), 'w3access');
+
+// Get the configuration directory from the environment variable or use a default
+const configDir = process.env.CONFIG_DIR || path.join(os.tmpdir(), 'w3access');
 
 if (!fs.existsSync(configDir)) {
   fs.mkdirSync(configDir, { recursive: true });
@@ -35,6 +36,7 @@ if (!fs.existsSync(configDir)) {
 const conf = new Conf({
   cwd: configDir,
 });
+
 
 
 
