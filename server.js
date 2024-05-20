@@ -19,10 +19,15 @@ import { existsSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
 
-// Function to create a directory
+
+
+
 async function createDirectory() {
-  const baseDir = process.env.WRITABLE_PATH || '/tmp'; // Default to /tmp if not set
+  // Using a temporary directory for Vercel compatibility
+  const baseDir = tmpdir();
+  console.log("baseDir: ",baseDir)
   const targetDir = join(baseDir, 'w3access');
+  console.log("targetDir: ", targetDir)
 
   if (!existsSync(targetDir)) {
     try {
@@ -37,7 +42,6 @@ async function createDirectory() {
 }
 
 createDirectory();
-
 
 
 const app = express();
