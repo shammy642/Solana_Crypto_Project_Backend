@@ -85,7 +85,7 @@ app.post("/guapanate", async (req, res) => {
 
     const imageName = `${fileCount}.jpeg`;
     const metadataName = `${fileCount}.json`;
-    const imagePath = path.join(__dirname, "images", imageName);
+    const imagePath = path.join(__dirname, "public/images", imageName);
     const metadataPath = path.join(__dirname, "nfts", metadataName);
     let imageURI;
     fs.writeFile(imagePath, dataBuffer, async (err) => {
