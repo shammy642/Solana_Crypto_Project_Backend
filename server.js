@@ -49,7 +49,7 @@ app.use(express.json({ limit: "300kb" }));
 app.use(express.urlencoded({ limit: "300kb", extended: true }));
 
 //Connect to web3Storage
-createAndConnect();
+await createAndConnect();
 
 app.post("/login", (req, res) => {
   const { password } = req.body;
