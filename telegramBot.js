@@ -19,12 +19,12 @@ bot.on("message", (msg) => {
   }
 });
 
-export const sendTgPic = (image, name) => {
+export const sendTgPic = (image, name, metadataURI) => {
   const options = {
     caption: `${name} just got GUAPANATED!`,
     reply_markup: {
       inline_keyboard: [
-          [{ text: "MINT THIS", url: `https://getguap.xyz/mint?metadatauri=metadataUri` }],
+          [{ text: "MINT THIS", url: `https://getguap.xyz/mint?metadatauri=${metadataURI}` }],
           [
             {
               text: "GUAPANIZE YOUR IMAGES HERE",
