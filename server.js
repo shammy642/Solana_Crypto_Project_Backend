@@ -134,7 +134,7 @@ const __dirname = path.dirname(__filename);
 
 app.post("/guapanate", async (req, res) => {
   try {
-    const { image, name, backgroundRarity } = req.body;
+    const { image, name, background } = req.body;
     const fileCount = await getAndUpdateNFTCount();
 
     if (!image) {
@@ -169,7 +169,7 @@ app.post("/guapanate", async (req, res) => {
       1,
       fileCount,
       imageURI,
-      backgroundRarity
+      background
     );
     const metadataJSON = JSON.stringify(metadata);
     const metadataBlob = new Blob([metadataJSON], {
