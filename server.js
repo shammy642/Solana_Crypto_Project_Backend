@@ -25,11 +25,14 @@ const we3StorageEmail = process.env.WEB3_STORAGE_EMAIL;
 
 app.use("/images", express.static("/Guapanated_Images"));
 
+console.log(corsOrigin)
+
 app.use(
   cors({
     origin: corsOrigin,
   })
 );
+
 app.use(express.json({ limit: "300kb" }));
 app.use(express.urlencoded({ limit: "300kb", extended: true }));
 
