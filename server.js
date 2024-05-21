@@ -11,6 +11,7 @@ import { createMetadata } from "./createMetadata.js";
 import { sendTgPic } from "./telegramBot.js";
 import ws from "ws";
 import { kv } from "@vercel/kv";
+import greenlockExpress from "@root/greenlock-express"
 
 // await kv.set("nftCounter", null);
 // console.log(await kv.get("nftCounter"))
@@ -190,6 +191,24 @@ app.post("/guapanate", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+
+
+const greenlock = greenlockExpress.init({
+  packageRoot: __dirname,
+  configDir: './greenlock.d',
+  maintainerEmail: 'guapteamsol@gmail.com',
+  cluster: false,
+  packageAgent: 'greenlock-express.js/2.7.18',
+  sites: [{
+    subject: "api.getguap.xyz",
+    altnames: ["api.getguap.xyz"]
+  }],
+  server: {
+    http2: true,   // Optionally enable HTTP/2
+    httpPort: 80,  // Default HTTP port
+    httpsPort: 3001 // Your custom HTTPS port
+  }
 });
+
+// It serves on HTTP1 by default if you don't specify http2
+greenlock.serve(app);

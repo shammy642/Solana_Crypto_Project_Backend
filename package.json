@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
+    "@root/greenlock-express": "^4.0.4",
     "@vercel/edge-config": "^1.1.0",
     "@vercel/kv": "^1.0.1",
     "@web3-storage/w3up-client": "^13.1.1",
