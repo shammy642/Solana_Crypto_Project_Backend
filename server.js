@@ -11,13 +11,14 @@ import { createMetadata } from "./createMetadata.js";
 import { sendTgPic } from "./telegramBot.js";
 import ws from "ws";
 import { kv } from "@vercel/kv";
-import greenlockExpress from "@root/greenlock-express"
+import greenlockExpress from "@root/greenlock-express";
+import { removeBackground } from "./removeBackground.js";
+
 
 // await kv.set("nftCounter", null);
 // console.log(await kv.get("nftCounter"))
 
 const app = express();
-
 
 const port = process.env.APP_PORT;
 const corsOrigin = process.env.CORS_ORIGIN;
@@ -26,7 +27,7 @@ const we3StorageEmail = process.env.WEB3_STORAGE_EMAIL;
 
 app.use("/images", express.static("/Guapanated_Images"));
 
-console.log(corsOrigin)
+console.log(corsOrigin);
 
 app.use(
   cors({
@@ -34,8 +35,8 @@ app.use(
   })
 );
 
-app.use(express.json({ limit: "300kb" }));
-app.use(express.urlencoded({ limit: "300kb", extended: true }));
+app.use(express.json({ limit: "1500kb" }));
+app.use(express.urlencoded({ limit: "1500kb", extended: true }));
 
 //Connect to web3Storage
 createAndConnect();
@@ -93,7 +94,6 @@ const __dirname = path.dirname(__filename);
 //       } else {
 //         try {
 //           imageURI = await uploadFileToIpfs(blob);
-          
 
 //           const metadata = createMetadata(
 //             name,
@@ -135,7 +135,6 @@ const __dirname = path.dirname(__filename);
 //   }
 // });
 
-
 app.post("/guapanate", async (req, res) => {
   try {
     const { image, name, background } = req.body;
@@ -168,13 +167,7 @@ app.post("/guapanate", async (req, res) => {
     const imagePath = path.join(__dirname, "nfts", imageName);
     const metadataPath = path.join(__dirname, "nfts", metadataName);
     const imageURI = await uploadFileToIpfs(blob);
-    const metadata = createMetadata(
-      name,
-      1,
-      fileCount,
-      imageURI,
-      background
-    );
+    const metadata = createMetadata(name, 1, fileCount, imageURI, background);
     const metadataJSON = JSON.stringify(metadata);
     const metadataBlob = new Blob([metadataJSON], {
       type: "application/json",
@@ -184,31 +177,48 @@ app.post("/guapanate", async (req, res) => {
     const metadataURI = await uploadFileToIpfs(metadataBlob);
     sendTgPic(`https://${imageURI}.ipfs.w3s.link`, name, metadataURI);
     return res.status(200).json({ uri: metadataURI });
-
   } catch (error) {
     console.error("Error processing request:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
-
-
-const greenlock = greenlockExpress.init({
-  packageRoot: __dirname,
-  configDir: './greenlock.d',
-  maintainerEmail: 'guapteamsol@gmail.com',
-  cluster: false,
-  packageAgent: 'greenlock-express.js/2.7.18',
-  sites: [{
-    subject: "api.getguap.xyz",
-    altnames: ["api.getguap.xyz"]
-  }],
-  server: {
-    http2: true,   // Optionally enable HTTP/2
-    httpPort: 80,  // Default HTTP port
-    httpsPort: 3001 // Your custom HTTPS port
+app.post("/remove-background", async (req, res) => {
+  const { image } = req.body;
+  try {
+    const dataUrl = await removeBackground(image);
+    return res.status(200).json({ dataUrl });
+    
+  } catch (error) {
+    console.log("error removing background: ", error);
+    return res
+      .status(500)
+      .json({
+        message:
+          "Server error whilst removing background. See server logs for details",
+      });
   }
 });
 
+// const greenlock = greenlockExpress.init({
+//   packageRoot: __dirname,
+//   configDir: './greenlock.d',
+//   maintainerEmail: 'guapteamsol@gmail.com',
+//   cluster: false,
+//   packageAgent: 'greenlock-express.js/2.7.18',
+//   sites: [{
+//     subject: "api.getguap.xyz",
+//     altnames: ["api.getguap.xyz"]
+//   }],
+//   server: {
+//     http2: true,   // Optionally enable HTTP/2
+//     httpPort: 80,  // Default HTTP port
+//     httpsPort: 3001 // Your custom HTTPS port
+//   }
+// });
+
 // It serves on HTTP1 by default if you don't specify http2
-greenlock.serve(app);
+// greenlock.serve(app);
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
+});
