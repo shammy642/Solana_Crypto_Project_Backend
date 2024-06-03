@@ -12,7 +12,6 @@ import { sendTgPic } from "./telegramBot.js";
 import ws from "ws";
 import { kv } from "@vercel/kv";
 import greenlockExpress from "@root/greenlock-express";
-import { removeBackground } from "./removeBackground.js";
 
 
 // await kv.set("nftCounter", null);
@@ -183,42 +182,25 @@ app.post("/guapanate", async (req, res) => {
   }
 });
 
-app.post("/remove-background", async (req, res) => {
-  const { image } = req.body;
-  try {
-    const dataUrl = await removeBackground(image);
-    return res.status(200).json({ dataUrl });
-    
-  } catch (error) {
-    console.log("error removing background: ", error);
-    return res
-      .status(500)
-      .json({
-        message:
-          "Server error whilst removing background. See server logs for details",
-      });
+const greenlock = greenlockExpress.init({
+  packageRoot: __dirname,
+  configDir: './greenlock.d',
+  maintainerEmail: 'guapteamsol@gmail.com',
+  cluster: false,
+  packageAgent: 'greenlock-express.js/2.7.18',
+  sites: [{
+    subject: "api.getguap.xyz",
+    altnames: ["api.getguap.xyz"]
+  }],
+  server: {
+    http2: true,   // Optionally enable HTTP/2
+    httpPort: 80,  // Default HTTP port
+    httpsPort: 3001 // Your custom HTTPS port
   }
 });
 
-// const greenlock = greenlockExpress.init({
-//   packageRoot: __dirname,
-//   configDir: './greenlock.d',
-//   maintainerEmail: 'guapteamsol@gmail.com',
-//   cluster: false,
-//   packageAgent: 'greenlock-express.js/2.7.18',
-//   sites: [{
-//     subject: "api.getguap.xyz",
-//     altnames: ["api.getguap.xyz"]
-//   }],
-//   server: {
-//     http2: true,   // Optionally enable HTTP/2
-//     httpPort: 80,  // Default HTTP port
-//     httpsPort: 3001 // Your custom HTTPS port
-//   }
-// });
-
 // It serves on HTTP1 by default if you don't specify http2
-// greenlock.serve(app);
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-});
+greenlock.serve(app);
+// app.listen(port, () => {
+//   console.log(`Server running on http://localhost:${port}`);
+// });
