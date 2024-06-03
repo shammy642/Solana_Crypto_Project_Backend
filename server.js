@@ -194,7 +194,7 @@ const greenlock = greenlockExpress.init({
   }],
   server: {
     http2: true,   // Optionally enable HTTP/2
-    httpPort: 80,  // Default HTTP port
+    httpPort: 8080,  // Default HTTP port
     httpsPort: 3001 // Your custom HTTPS port
   }
 });
